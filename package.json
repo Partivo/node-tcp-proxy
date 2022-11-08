@@ -1,6 +1,6 @@
 {
 	"name": "@partivo/tcp-proxy",
-	"version": "0.0.1-beta.4",
+	"version": "0.0.1-beta.5",
 	"description": "Simple TCP Proxy - Node.js",
 	"main": "index.js",
 	"type": "module",
@@ -14,5 +14,6 @@
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
-	}
+	},
+	"false": {}
 }
