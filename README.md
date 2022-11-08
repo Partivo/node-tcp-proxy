@@ -1,1 +1,1 @@
-# @partivo/tcp-proxy  [![Node.js Package](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml)
+# @partivo/tcp-proxy [![Node.js Package](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml)
