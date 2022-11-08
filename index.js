@@ -2,33 +2,27 @@ import net from 'node:net';
 
 export default class tcpProxy {
     constructor(client, server, callback) {
-        this.client = client;
         this.server = server;
+        this.client = client;
         this.callback = callback;
 
-        this.#createServer();
+        this.createServer();
     }
 
-    #createServer() {
-        net.createServer(this.#handle)
+    createServer() {
+        net.createServer((socket) => this.handle(socket, net.createConnection(this.client.port, this.client.host)))
             .listen(this.server.port, this.server.host);
     }
 
-    #createConnection() {
-        return net.createConnection(this.client.port, this.server.host);
+    handle(server, client) {
+        this.log(server, client);
+        this.data(server, client);
+        this.close(server, client);
     }
 
-    #handle(socket) {
-        var client = this.#createConnection();
-
-        this.#log(socket, client);
-        this.#data(socket, client);
-        this.#close(socket, client);
-    }
-
-    #log(socket, client) {
+    log(socket, client) {
         // Access
-        console.log({
+        this.callback({
             type: "access",
             log: {
                 message: 'connect',
@@ -40,7 +34,7 @@ export default class tcpProxy {
                 }
             }
         });
-        socket.on('end', () => console.log({
+        socket.on('end', () => this.callback({
             type: "access",
             log: {
                 message: 'disconnect',
@@ -54,24 +48,24 @@ export default class tcpProxy {
         }));
 
         // Error
-        socket.on("error", (err) => console.log({
+        socket.on("error", (err) => this.callback({
             type: "error",
             model: "server",
             log: err
         }));
-        client.on("error", (err) => console.log({
+        client.on("error", (err) => this.callback({
             type: "error",
             model: "client",
             log: err
         }));
     }
 
-    #data(socket, client) {
+    data(socket, client) {
         socket.pipe(client);
         client.pipe(socket);
     }
 
-    #close(socket, client) {
+    close(socket, client) {
         client.on('close', () => socket.end());
         socket.on('close', () => client.end());
     }
