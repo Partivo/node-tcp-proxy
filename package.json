@@ -1,0 +1,18 @@
+{
+	"name": "@partivo/node-tcp-proxy",
+	"version": "0.0.1",
+	"description": "Simple TCP Proxy - Node.js",
+	"main": "index.js",
+	"type": "module",
+	"scripts": { "test": "echo 'Error: no test specified'" },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Partivo/node-tcp-proxy.git"
+	},
+	"keywords": [ "tcp", "proxy" ],
+	"author": "Partivo",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	}
+}
