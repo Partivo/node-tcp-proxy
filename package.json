@@ -1,6 +1,6 @@
 {
 	"name": "@partivo/node-tcp-proxy",
-	"version": "0.0.1",
+	"version": "0.0.1-beta",
 	"description": "Simple TCP Proxy - Node.js",
 	"main": "index.js",
 	"type": "module",
