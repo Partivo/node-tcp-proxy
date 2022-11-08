@@ -28,7 +28,7 @@ export default class tcpProxy {
 
     #log(socket, client) {
         // Access
-        socket.on('connection', () => this.callback({
+        this.callback({
             type: "access",
             log: {
                 message: 'connect',
@@ -39,7 +39,7 @@ export default class tcpProxy {
                     port: socket.localPort
                 }
             }
-        }));
+        });
         socket.on('end', () => this.callback({
             type: "access",
             log: {
