@@ -50,13 +50,17 @@ export default class tcpProxy {
         // Error
         socket.on("error", (err) => this.callback({
             type: "error",
-            model: "server",
-            log: err
+            log: {
+                model: "server",
+                ...err
+            }
         }));
         client.on("error", (err) => this.callback({
             type: "error",
-            model: "client",
-            log: err
+            log: {
+                model: "client",
+                ...err
+            }
         }));
     }
 
