@@ -2,12 +2,14 @@
 
 ```js
 new tcpProxy({
-	host: '127.0.0.1', // Client Host
-	port: 8888 // Client Port
-}, {
-	host: '127.0.0.1', // Server Host
-	port: 8887 // Server Port
-}, (data) => {
-	console.log(data); // Log
+	client: {
+		host: '127.0.0.1', // Client Host
+		port: 8888 // Client Port
+	},
+	server: {
+		host: '127.0.0.1', // Server Host
+		port: 8887 // Server Port
+	}, 
+	log: (data) => console.log(data) // Log
 });
 ```
