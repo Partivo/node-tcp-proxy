@@ -25,6 +25,7 @@ export default class tcpProxy {
         this.callback({
             type: "access",
             log: {
+                time: new Date().toISOString(),
                 message: 'connect',
                 remoteAddress: socket.remoteAddress,
                 remotePort: socket.remotePort,
@@ -37,6 +38,7 @@ export default class tcpProxy {
         socket.on('end', () => this.callback({
             type: "access",
             log: {
+                time: new Date().toISOString(),
                 message: 'disconnect',
                 remoteAddress: socket.remoteAddress,
                 remotePort: socket.remotePort,
@@ -51,14 +53,16 @@ export default class tcpProxy {
         socket.on("error", (err) => this.callback({
             type: "error",
             log: {
-                model: "server",
+                time: new Date().toISOString(),
+                message: "server",
                 ...err
             }
         }));
         client.on("error", (err) => this.callback({
             type: "error",
             log: {
-                model: "client",
+                time: new Date().toISOString(),
+                message: "client",
                 ...err
             }
         }));
