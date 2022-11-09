@@ -12,9 +12,9 @@ export default class tcpProxy {
     }
 
     #handle(server, client) {
-        this.log(server, client);
-        this.data(server, client);
-        this.close(server, client);
+        this.#log(server, client);
+        this.#data(server, client);
+        this.#close(server, client);
     }
 
     #log(socket, client) {
