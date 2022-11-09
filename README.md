@@ -8,6 +8,6 @@ new tcpProxy({
 	host: '127.0.0.1', // Server Host
 	port: 8887 // Server Port
 }, (data) => {
-	// Log
+	console.log(data); // Log
 });
 ```
