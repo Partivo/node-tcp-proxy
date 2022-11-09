@@ -4,7 +4,9 @@ import tcpProxy from './index.js';
 const myArgs = process.argv.slice(2);
 
 if(!myArgs[0] && !myArgs[1]) {
-	console.log('Error IP And Port Not Found');
+	console.log('Upstream IP or Port not found!');
+	console.log('Example: tcp-proxy 127.0.0.1 8080');
+	console.log('Optional: tcp-proxy 127.0.0.1 8080 -l 127.0.0.1 8888');
 	process.exit(1);
 }
 
