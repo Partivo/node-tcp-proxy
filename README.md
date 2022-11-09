@@ -3,14 +3,10 @@ It is a simple tcp proxy written in NodeJS. You can support development. If ther
 
 ## Example Code
 ```js
-new tcpProxy({
-	client: {
-		host: '127.0.0.1', // Client Host
-		port: 8888 // Client Port
-	},
-	server: {
-		host: '127.0.0.1', // Server Host
-		port: 8887 // Server Port
+new tcpProxy('127.0.0.1', 8888, {
+	listen: {
+		host: '127.0.0.1', // Server Host (Optional)
+		port: 8887 // Server Port (optional)
 	}, 
 	log: (data) => console.log(data) // Log
 });
