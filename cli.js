@@ -14,7 +14,7 @@ const options = {
 	log: (data) => {
 		if(data.type == "access") console.info(JSON.stringify(data.log));
 		else if(data.type == "error") console.error(JSON.stringify(data.log));
-		else console.log(data);
+		else console.warn(data);
     }
 };
 
