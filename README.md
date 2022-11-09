@@ -1,6 +1,7 @@
 <h1 align="center">@partivo/tcp-proxy</h1>
-# [![Node.js Package](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml)
 
+
+## Example Code
 ```js
 new tcpProxy({
 	client: {
@@ -17,4 +18,5 @@ new tcpProxy({
 
 ## Coming Soon
 * Load Blancer
+* CLI
 
