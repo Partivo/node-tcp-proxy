@@ -1,6 +1,6 @@
 import net from 'node:net';
 
-class tcpProxy {
+export default class tcpProxy {
     constructor(client, server, callback) {
         this.server = server;
         this.client = client;
@@ -70,5 +70,3 @@ class tcpProxy {
         socket.on('close', () => client.end());
     }
 }
-
-module.exports = tcpProxy;
