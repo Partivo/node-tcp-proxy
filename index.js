@@ -2,9 +2,11 @@ import net from 'node:net';
 
 export default class tcpProxy {
     constructor(ip, port, options) {
-        this.ip = ip
-        this.port = port
+        this.ip = ip;
+        this.port = port;
         this.options = options;
+        
+        this.client = [];
         this.#createServer();
     }
 
@@ -16,7 +18,7 @@ export default class tcpProxy {
     }
 
     #handle(server, client) {
-        this.client[] = client;
+        this.client.push(client);
         this.#log(server, client);
         this.#data(server, client);
         this.#close(server, client);
