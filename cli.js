@@ -15,7 +15,7 @@ const options = {
 		if(data.type == "access") console.info(JSON.stringify(data.log));
 		else if(data.type == "error") console.error(JSON.stringify(data.log));
 		else console.warn(data);
-    }
+	}
 };
 
 if(myArgs[2] == "-l" || myArgs[2] == "-listen") options.listen = {
