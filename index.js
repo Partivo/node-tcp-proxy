@@ -8,10 +8,11 @@ export default class tcpProxy {
 
     #createServer() {
         this.server = net.createServer((socket) => this.#handle(socket, net.createConnection(this.data.client.port, this.data.client.host)))
-            .listen(this.data.server.port, this.data.server.host);
+        this.server.listen(this.data.server.port, this.data.server.host);
     }
 
     #handle(server, client) {
+        this.client[] = client;
         this.#log(server, client);
         this.#data(server, client);
         this.#close(server, client);
@@ -77,5 +78,9 @@ export default class tcpProxy {
     
     end() {
         this.server.close();
+        for (var id in this.client) {
+            this.client[id].destroy();
+        }
+        this.server.unref();
     }
 }
