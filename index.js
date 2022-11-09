@@ -1,28 +1,26 @@
 import net from 'node:net';
 
 export default class tcpProxy {
-    constructor(client, server, callback) {
-        this.server = server;
-        this.client = client;
-        this.callback = callback;
+    constructor(data) {
+        this.data = data;
 
-        this.createServer();
+        this.#createServer();
     }
 
-    createServer() {
-        net.createServer((socket) => this.handle(socket, net.createConnection(this.client.port, this.client.host)))
-            .listen(this.server.port, this.server.host);
+    #createServer() {
+        this.server = net.createServer((socket) => this.#handle(socket, net.createConnection(this.data.client.port, this.data.client.host)))
+            .listen(this.data.server.port, this.data.server.host);
     }
 
-    handle(server, client) {
+    #handle(server, client) {
         this.log(server, client);
         this.data(server, client);
         this.close(server, client);
     }
 
-    log(socket, client) {
+    #log(socket, client) {
         // Access
-        this.callback({
+        this.data.log({
             type: "access",
             log: {
                 time: new Date().toISOString(),
@@ -35,7 +33,7 @@ export default class tcpProxy {
                 }
             }
         });
-        socket.on('end', () => this.callback({
+        socket.on('end', () => this.data.log({
             type: "access",
             log: {
                 time: new Date().toISOString(),
@@ -50,7 +48,7 @@ export default class tcpProxy {
         }));
 
         // Error
-        socket.on("error", (err) => this.callback({
+        socket.on("error", (err) => this.data.log({
             type: "error",
             log: {
                 time: new Date().toISOString(),
@@ -58,7 +56,7 @@ export default class tcpProxy {
                 ...err
             }
         }));
-        client.on("error", (err) => this.callback({
+        client.on("error", (err) => this.data.log({
             type: "error",
             log: {
                 time: new Date().toISOString(),
@@ -68,13 +66,17 @@ export default class tcpProxy {
         }));
     }
 
-    data(socket, client) {
+    #data(socket, client) {
         socket.pipe(client);
         client.pipe(socket);
     }
 
-    close(socket, client) {
+    #close(socket, client) {
         client.on('close', () => socket.end());
         socket.on('close', () => client.end());
+    }
+    
+    end() {
+        this.server.close();
     }
 }
