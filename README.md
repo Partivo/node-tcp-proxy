@@ -5,8 +5,8 @@ It is a simple tcp proxy written in NodeJS. You can support development. If ther
 ```js
 new tcpProxy('127.0.0.1', 8888, {
 	listen: {
-		host: '127.0.0.1', // Server Host (Optional)
-		port: 8887 // Server Port (optional)
+		host: '127.0.0.1', // Listen Host (Optional)
+		port: 8887 // Listen Port (optional)
 	}, 
 	log: (data) => console.log(data) // Log
 });
