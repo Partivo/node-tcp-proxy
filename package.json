@@ -9,6 +9,7 @@
 		"type": "git",
 		"url": "https://github.com/Partivo/node-tcp-proxy.git"
 	},
+	"bin": { "tcp-proxy": "./cli.js" },
 	"keywords": [ "tcp", "proxy" ],
 	"author": "Partivo",
 	"license": "MIT",
