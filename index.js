@@ -26,7 +26,7 @@ export default class tcpProxy {
 
     #log(socket, client) {
         // Access
-        this.data.log({
+        this.options.log({
             type: "access",
             log: {
                 time: new Date().toISOString(),
@@ -39,7 +39,7 @@ export default class tcpProxy {
                 }
             }
         });
-        socket.on('end', () => this.data.log({
+        socket.on('end', () => this.options.log({
             type: "access",
             log: {
                 time: new Date().toISOString(),
@@ -54,7 +54,7 @@ export default class tcpProxy {
         }));
 
         // Error
-        socket.on("error", (err) => this.data.log({
+        socket.on("error", (err) => this.options.log({
             type: "error",
             log: {
                 time: new Date().toISOString(),
@@ -62,7 +62,7 @@ export default class tcpProxy {
                 ...err
             }
         }));
-        client.on("error", (err) => this.data.log({
+        client.on("error", (err) => this.options.log({
             type: "error",
             log: {
                 time: new Date().toISOString(),
