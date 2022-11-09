@@ -1,4 +1,5 @@
-# @partivo/tcp-proxy [![Node.js Package](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml)
+<h1 align="center">@partivo/tcp-proxy</h1>
+# [![Node.js Package](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/Partivo/node-tcp-proxy/actions/workflows/npm-publish.yml)
 
 ```js
 new tcpProxy({
@@ -13,3 +14,7 @@ new tcpProxy({
 	log: (data) => console.log(data) // Log
 });
 ```
+
+## Coming Soon
+* Load Blancer
+
