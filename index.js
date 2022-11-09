@@ -11,7 +11,7 @@ export default class tcpProxy {
     }
 
     #createServer() {
-        this.options.listen.host = this.options.listen.host ? this.data.server.host : '127.0.0.1';
+        this.options.listen.host = this.options.listen.host ? this.options.listen.host : '127.0.0.1';
         this.options.listen.port = this.options.listen.port ? this.options.listen.port : this.port;
         this.server = net.createServer((socket) => this.#handle(socket, net.createConnection(this.port, this.ip)))
         this.server.listen(this.options.listen.port, this.options.listen.host);
