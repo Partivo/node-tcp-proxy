@@ -1,5 +1,5 @@
 <h1 align="center">@partivo/tcp-proxy</h1>
-
+It is a simple tcp proxy written in NodeJS. You can support development. If there is a problem, you can open Issues.
 
 ## Example Code
 ```js
