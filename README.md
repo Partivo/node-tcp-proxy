@@ -14,5 +14,5 @@ new tcpProxy('127.0.0.1', 8888, {
 
 ## Coming Soon
 * Load Blancer
-* CLI
+* CLI (Added but still in the test phase)
 
