@@ -3,7 +3,6 @@ import net from 'node:net';
 export default class tcpProxy {
     constructor(data) {
         this.data = data;
-
         this.#createServer();
     }
 
