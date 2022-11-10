@@ -40,10 +40,8 @@ export default class tcpProxy {
                 message: 'connect',
                 remoteAddress: socket.remoteAddress,
                 remotePort: socket.remotePort,
-                server: {
-                    host: socket.localAddress,
-                    port: socket.localPort
-                }
+                forward: `${socket.localAddress}:${socket.localPort}`,
+                listen: `${client.remoteAddress}:${client.remotePort}`
             }
         });
         socket.on('end', () => this.options.log({
@@ -53,10 +51,8 @@ export default class tcpProxy {
                 message: 'disconnect',
                 remoteAddress: socket.remoteAddress,
                 remotePort: socket.remotePort,
-                server: {
-                    host: socket.localAddress,
-                    port: socket.localPort
-                }
+                forward: `${socket.localAddress}:${socket.localPort}`,
+                listen: `${client.remoteAddress}:${client.remotePort}`
             }
         }));
 
