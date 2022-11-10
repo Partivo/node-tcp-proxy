@@ -18,6 +18,7 @@ export default class tcpProxy {
     }
 
     #createConnection() {
+        // net.createConnection(this.port, this.ip)
         const client = new net.Socket();
         client.connect(this.port, this.ip);
         return client;
