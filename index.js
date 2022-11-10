@@ -13,22 +13,31 @@ export default class tcpProxy {
     #createServer() {
         this.options.listen.host = this.options.listen.host ? this.options.listen.host : '127.0.0.1';
         this.options.listen.port = this.options.listen.port ? this.options.listen.port : this.port;
-        this.server = net.createServer((socket) => this.#handle(socket, this.#createConnection()))
+        this.server = net.createServer((socket) => {
+			var client = tcpProxy.createConnection(this.ip, this.port, socket, (err) => this.options.log({
+            	type: "error",
+            	log: {
+                	time: new Date().toISOString(),
+                	message: "client",
+                	...err
+            	}
+			}));
+            this.client.push(client);
+            this.#log(socket);
+            socket.on('close', () => client.end());
+        });
         this.server.listen(this.options.listen.port, this.options.listen.host);
     }
 
-    #createConnection() {
-        // net.createConnection(this.port, this.ip)
-        const client = new net.Socket();
-        client.connect(this.port, this.ip);
-        return client;
-    }
-    
-    #handle(server, client) {
-        this.client.push(client);
-        this.#log(server, client);
-        this.#data(server, client);
-        this.#close(server, client);
+    static createConnection(ip, port, socket, error) {
+        const client = net.createConnection(port, ip);
+        
+        socket.pipe(client);
+        client.pipe(socket);
+        
+        client.on("error", (err) => error(error));
+        client.on('close', () => socket.end());
+		return client;
     }
 
     #log(socket, client) {
@@ -65,26 +74,8 @@ export default class tcpProxy {
                 ...err
             }
         }));
-        client.on("error", (err) => this.options.log({
-            type: "error",
-            log: {
-                time: new Date().toISOString(),
-                message: "client",
-                ...err
-            }
-        }));
     }
 
-    #data(socket, client) {
-        socket.pipe(client);
-        client.pipe(socket);
-    }
-
-    #close(socket, client) {
-        client.on('close', () => socket.end());
-        socket.on('close', () => client.end());
-    }
-    
     end() {
         this.server.close();
         for (var id in this.client) {
