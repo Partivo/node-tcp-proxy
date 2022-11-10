@@ -14,18 +14,18 @@ export default class tcpProxy {
         this.options.listen.host = this.options.listen.host ? this.options.listen.host : '127.0.0.1';
         this.options.listen.port = this.options.listen.port ? this.options.listen.port : this.port;
         this.server = net.createServer((socket) => {
-			var client = tcpProxy.createConnection(this.ip, this.port, socket, (err) => this.options.log({
-            	type: "error",
-            	log: {
-                	time: new Date().toISOString(),
-                	message: "client",
-                	...err
-            	}
-			}));
-            this.client.push(client);
-            this.#log(socket);
-            socket.on('close', () => client.end());
-        });
+		var client = tcpProxy.createConnection(this.ip, this.port, socket, (err) => this.options.log({
+			type: "error",
+            		log: {
+                		time: new Date().toISOString(),
+                		message: "client",
+                		...err
+            		}
+		}));
+		this.client.push(client);
+            	this.#log(socket);
+            	socket.on('close', () => client.end());
+	});
         this.server.listen(this.options.listen.port, this.options.listen.host);
     }
 
@@ -37,7 +37,7 @@ export default class tcpProxy {
         
         client.on("error", (err) => error(error));
         client.on('close', () => socket.end());
-		return client;
+	return client;
     }
 
     #log(socket, client) {
