@@ -26,8 +26,8 @@ if(myArgs[2] == "-l" || myArgs[2] == "-listen") options.listen = {
 var proxy = new tcpProxy(myArgs[0], myArgs[1], options);
 
 process.on("uncaughtException", (err) => {
-    console.error(err);
-    proxy.end();
+	console.error(err);
+	proxy.end();
 });
 
 process.on("SIGINT", () => proxy.end());
