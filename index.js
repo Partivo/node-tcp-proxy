@@ -1,9 +1,8 @@
 import net from 'node:net';
 
 export default class tcpProxy {
-    constructor(ip, port, options) {
-        this.ip = ip;
-        this.port = port;
+    constructor(target, options) {
+        this.target = target;
         this.options = options;
         
         this.client = [];
@@ -12,9 +11,9 @@ export default class tcpProxy {
 
     #createServer() {
         this.options.listen.host = this.options.listen.host || '127.0.0.1';
-        this.options.listen.port = this.options.listen.port || this.port;
+        this.options.listen.port = this.options.listen.port || this.target.split(":")[1];
         this.server = net.createServer((socket) => {
-		var client = tcpProxy.createProxy(socket, `${this.ip}:${this.port}`, (err) => this.options.log({
+		var client = tcpProxy.createProxy(socket, this.target, (err) => this.options.log({
 			type: "error",
             		log: {
                 		time: new Date().toISOString(),
