@@ -1,86 +1,86 @@
 import net from 'node:net';
 
 export default class tcpProxy {
-    constructor(target, options) {
-        this.target = target;
-        this.options = options;
+	constructor(target, options) {
+		this.target = target;
+		this.options = options;
         
-        this.client = [];
-        this.#createServer();
-    }
+		this.client = [];
+		this.#createServer();
+	}
 
-    #createServer() {
-        this.options.listen.host = this.options.listen.host || '127.0.0.1';
-        this.options.listen.port = this.options.listen.port || this.target.split(":")[1];
-        this.server = net.createServer((socket) => {
-		var client = tcpProxy.createProxy(socket, this.target, (err) => this.options.log({
-			type: "error",
-            		log: {
-                		time: new Date().toISOString(),
-                		message: "client",
-                		...err
-            		}
+	#createServer() {
+		this.options.listen.host = this.options.listen.host || '127.0.0.1';
+		this.options.listen.port = this.options.listen.port || this.target.split(":")[1];
+		this.server = net.createServer((socket) => {
+			var client = tcpProxy.createProxy(socket, this.target, (err) => this.options.log({
+				type: "error",
+				log: {
+					time: new Date().toISOString(),
+					message: "client",
+					...err
+				}
+			}));
+			this.client.push(client);
+			this.#log(socket);
+			socket.on('close', () => client.end());
+		});
+		this.server.listen(this.options.listen.port, this.options.listen.host);
+	}
+
+	static createProxy(socket, target, error) {
+		target = target.split(":");
+		const client = net.createConnection(target[1], target[0]);
+        
+		socket.pipe(client);
+		client.pipe(socket);
+        
+		client.on("error", error);
+		client.on('close', () => socket.end());
+		return client;
+	}
+
+	#log(socket, client) {
+		// Access
+		this.options.log({
+			type: "access",
+			log: {
+				time: new Date().toISOString(),
+				message: 'connect',
+				remoteAddress: socket.remoteAddress,
+				remotePort: socket.remotePort,
+				forward: `${socket.localAddress}:${socket.localPort}`,
+				listen: `${client.remoteAddress}:${client.remotePort}`
+			}
+		});
+		socket.on('end', () => this.options.log({
+			type: "access",
+			log: {
+				time: new Date().toISOString(),
+				message: 'disconnect',
+				remoteAddress: socket.remoteAddress,
+				remotePort: socket.remotePort,
+				forward: `${socket.localAddress}:${socket.localPort}`,
+				listen: `${client.remoteAddress}:${client.remotePort}`
+			}
 		}));
-		this.client.push(client);
-            	this.#log(socket);
-            	socket.on('close', () => client.end());
-	});
-        this.server.listen(this.options.listen.port, this.options.listen.host);
-    }
 
-    static createProxy(socket, target, error) {
-	target = target.split(":");
-        const client = net.createConnection(target[1], target[0]);
-        
-        socket.pipe(client);
-        client.pipe(socket);
-        
-        client.on("error", error);
-        client.on('close', () => socket.end());
-	return client;
-    }
+		// Error
+		socket.on("error", (err) => this.options.log({
+			type: "error",
+			log: {
+				time: new Date().toISOString(),
+				message: "server",
+				...err
+			}
+		}));
+	}
 
-    #log(socket, client) {
-        // Access
-        this.options.log({
-            type: "access",
-            log: {
-                time: new Date().toISOString(),
-                message: 'connect',
-                remoteAddress: socket.remoteAddress,
-                remotePort: socket.remotePort,
-                forward: `${socket.localAddress}:${socket.localPort}`,
-                listen: `${client.remoteAddress}:${client.remotePort}`
-            }
-        });
-        socket.on('end', () => this.options.log({
-            type: "access",
-            log: {
-                time: new Date().toISOString(),
-                message: 'disconnect',
-                remoteAddress: socket.remoteAddress,
-                remotePort: socket.remotePort,
-                forward: `${socket.localAddress}:${socket.localPort}`,
-                listen: `${client.remoteAddress}:${client.remotePort}`
-            }
-        }));
-
-        // Error
-        socket.on("error", (err) => this.options.log({
-            type: "error",
-            log: {
-                time: new Date().toISOString(),
-                message: "server",
-                ...err
-            }
-        }));
-    }
-
-    end() {
-        this.server.close();
-        for (var id in this.client) {
-            this.client[id].destroy();
-        }
-        this.server.unref();
-    }
+	end() {
+		this.server.close();
+		for (var id in this.client) {
+			this.client[id].destroy();
+		}
+		this.server.unref();
+	}
 }
