@@ -11,13 +11,10 @@ export default class tcpProxy {
     }
 
     #createServer() {
-        this.options.listen.host = this.options.listen.host ? this.options.listen.host : '127.0.0.1';
-        this.options.listen.port = this.options.listen.port ? this.options.listen.port : this.port;
+        this.options.listen.host = this.options.listen.host || '127.0.0.1';
+        this.options.listen.port = this.options.listen.port || this.port;
         this.server = net.createServer((socket) => {
-		var client = tcpProxy.createProxy(socket, {
-			host: this.ip,
-			port: this.port
-		}, (err) => this.options.log({
+		var client = tcpProxy.createProxy(socket, `${this.ip}:${this.port}`, (err) => this.options.log({
 			type: "error",
             		log: {
                 		time: new Date().toISOString(),
@@ -32,8 +29,9 @@ export default class tcpProxy {
         this.server.listen(this.options.listen.port, this.options.listen.host);
     }
 
-    static createProxy(socket, options, error) {
-        const client = net.createConnection(options.port, options.host);
+    static createProxy(socket, target, error) {
+	target = target.split(":");
+        const client = net.createConnection(target[1], target[0]);
         
         socket.pipe(client);
         client.pipe(socket);
