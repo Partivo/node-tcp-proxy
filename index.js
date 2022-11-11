@@ -17,7 +17,7 @@ export default class tcpProxy {
 				type: "error",
 				log: {
 					time: new Date().toISOString(),
-					message: "client",
+					message: "upstream",
 					...err
 				}
 			}));
@@ -49,8 +49,11 @@ export default class tcpProxy {
 				message: 'connect',
 				remoteAddress: socket.remoteAddress,
 				remotePort: socket.remotePort,
-				forward: this.target,
-				listen: `${socket.remoteAddress}:${socket.remotePort}`
+				upstream: this.target,
+				listen: {
+					host: this.options.listen.host,
+					port: this.options.listen.port
+				}
 			}
 		});
 		socket.on('end', () => this.options.log({
@@ -60,8 +63,11 @@ export default class tcpProxy {
 				message: 'disconnect',
 				remoteAddress: socket.remoteAddress,
 				remotePort: socket.remotePort,
-				forward: this.target,
-				listen: `${socket.remoteAddress}:${socket.remotePort}`
+				upstream: this.target,
+				listen: {
+					host: this.options.listen.host,
+					port: this.options.listen.port
+				}
 			}
 		}));
 
