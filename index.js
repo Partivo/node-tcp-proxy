@@ -60,8 +60,8 @@ export default class tcpProxy {
 				message: 'disconnect',
 				remoteAddress: socket.remoteAddress,
 				remotePort: socket.remotePort,
-				forward: `${socket.localAddress}:${socket.localPort}`,
-				listen: `${client.remoteAddress}:${client.remotePort}`
+				forward: this.target,
+				listen: `${socket.remoteAddress}:${socket.remotePort}`
 			}
 		}));
 
