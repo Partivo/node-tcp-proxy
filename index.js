@@ -31,12 +31,13 @@ export default class tcpProxy {
 	static createProxy(socket, target, error) {
 		target = target.split(":");
 		const client = net.createConnection(target[1], target[0]);
-        
+
 		socket.pipe(client);
 		client.pipe(socket);
-        
+
 		client.on("error", error);
 		client.on('close', () => socket.end());
+
 		return client;
 	}
 
