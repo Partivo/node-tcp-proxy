@@ -18,6 +18,7 @@ export default class tcpProxy {
 				log: {
 					time: new Date().toISOString(),
 					message: "upstream",
+					upstream: this.target,
 					...err
 				}
 			}));
@@ -31,10 +32,11 @@ export default class tcpProxy {
 	static createProxy(socket, target, error) {
 		target = target.split(":");
 		const client = net.createConnection(target[1], target[0]);
-		client.on("error", error);
-		
+
 		socket.pipe(client);
 		client.pipe(socket);
+
+		client.on("error", error);
 		client.on('close', () => socket.end());
 
 		return client;
@@ -77,6 +79,10 @@ export default class tcpProxy {
 			log: {
 				time: new Date().toISOString(),
 				message: "server",
+				listen: {
+					host: this.options.listen.host,
+					port: this.options.listen.port
+				}
 				...err
 			}
 		}));
