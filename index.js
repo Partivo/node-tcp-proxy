@@ -82,7 +82,7 @@ export default class tcpProxy {
 				listen: {
 					host: this.options.listen.host,
 					port: this.options.listen.port
-				}
+				},
 				...err
 			}
 		}));
