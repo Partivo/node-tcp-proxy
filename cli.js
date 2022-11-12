@@ -23,7 +23,7 @@ if(myArgs[2] == "-l" || myArgs[2] == "-listen") options.listen = {
 	port: myArgs[4]
 };
 
-var proxy = new tcpProxy(myArgs[0], myArgs[1], options);
+var proxy = new tcpProxy(`${myArgs[0]}:${myArgs[1]}`, options);
 
 process.on("uncaughtException", (err) => {
 	console.error(err);
