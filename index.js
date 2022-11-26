@@ -4,15 +4,13 @@ export default class tcpProxy {
 	constructor(target, options) {
 		this.target = target;
 		this.options = options;
-        
-		this.client = [];
 		this.#createServer();
 	}
 
 	#createServer() {
 		this.options.listen.host = this.options.listen.host || '127.0.0.1';
 		this.options.listen.port = this.options.listen.port || this.target.split(":")[1];
-		this.server = net.createServer((socket) => {
+		net.createServer((socket) => {
 			var client = tcpProxy.createProxy(socket, this.target, (err) => this.options.log({
 				type: "error",
 				log: {
@@ -22,11 +20,10 @@ export default class tcpProxy {
 					...err
 				}
 			}));
-			this.client.push(client);
+
 			this.#log(socket);
 			socket.on('close', () => client.end());
-		});
-		this.server.listen(this.options.listen.port, this.options.listen.host);
+		}).listen(this.options.listen.port, this.options.listen.host);
 	}
 
 	static createProxy(socket, target, error) {
@@ -86,13 +83,5 @@ export default class tcpProxy {
 				...err
 			}
 		}));
-	}
-
-	end() {
-		this.server.close();
-		for (var id in this.client) {
-			this.client[id].destroy();
-		}
-		this.server.unref();
 	}
 }
