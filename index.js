@@ -36,6 +36,7 @@ export default class tcpProxy {
 	#log(socket, client) {
 		// Access
 		this.eventEmitter.emit('access', {
+			message: '',
 			remoteAddress: socket.remoteAddress,
 			remotePort: socket.remotePort,
 			upstream: this.target,
@@ -44,7 +45,8 @@ export default class tcpProxy {
 				port: this.options.listen.port
 			}
 		});
-		socket.on('end', () => this.eventEmitter.emit('disconnect', {
+		socket.on('end', () => this.eventEmitter.emit('access', {
+			message: "disconnect",
 			remoteAddress: socket.remoteAddress,
 			remotePort: socket.remotePort,
 			upstream: this.target,
@@ -55,14 +57,16 @@ export default class tcpProxy {
 		}));
 
 		// Error
-		socket.on("error", (err) => this.eventEmitter.emit('server-error', {
+		socket.on("error", (err) => this.eventEmitter.emit('error', {
+			message: "server",
 			listen: {
 				host: this.options.listen.host,
 				port: this.options.listen.port
 			},
 			...err
 		}));
-		client.on("error", (err) => this.eventEmitter.emit('upstream-error', {
+		client.on("error", (err) => this.eventEmitter.emit('error', {
+			message: "upstream",
 			upstream: this.target,
 			...err
 		}));
