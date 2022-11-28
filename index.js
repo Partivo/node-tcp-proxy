@@ -36,7 +36,7 @@ export default class tcpProxy {
 	#log(socket, client) {
 		// Access
 		this.eventEmitter.emit('access', {
-			message: '',
+			message: 'connect',
 			remoteAddress: socket.remoteAddress,
 			remotePort: socket.remotePort,
 			upstream: this.target,
