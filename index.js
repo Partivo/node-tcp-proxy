@@ -20,19 +20,24 @@ export default class tcpProxy {
 				target: this.target
 			});
 			this.#log(socket, client);
-			socket.on('close', () => client.end());
+			socket.on('close', () => client.emit('end'));
 		}).listen(this.options.listen.port, this.options.listen.host);
 	}
 
 	static createProxy(socket, options) {
+		const proxyEmitter = new EventEmitter();
 		const target = options.target.split(":");
+
 		const client = net.createConnection(target[1], target[0]);
 		client.on('close', () => socket.end());
 
 		socket.pipe(client);
 		client.pipe(socket);
+		
+		proxyEmitter.on('end', () => client.end());
+		client.on("error", (err) => proxyEmitter.emit('error', err));
 
-		return client;
+		return proxyEmitter;
 	}
 
 	#log(socket, client) {
