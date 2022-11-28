@@ -3,13 +3,13 @@ import net from 'node:net';
 
 export default class tcpProxy {
 	constructor(target, options) {
-		this.eventEmitter = new EventEmitter();
+		this.proxyEmitter = new EventEmitter();
 
 		this.target = target;
 		this.options = options;
 		this.#createServer();
 		
-		return this.eventEmitter;
+		return this.proxyEmitter;
 	}
 
 	#createServer() {
@@ -35,7 +35,7 @@ export default class tcpProxy {
 
 	#log(socket, client) {
 		// Access
-		this.eventEmitter.emit('access', {
+		this.proxyEmitter.emit('access', {
 			message: '',
 			remoteAddress: socket.remoteAddress,
 			remotePort: socket.remotePort,
@@ -45,7 +45,7 @@ export default class tcpProxy {
 				port: this.options.listen.port
 			}
 		});
-		socket.on('end', () => this.eventEmitter.emit('access', {
+		socket.on('end', () => this.proxyEmitter.emit('access', {
 			message: "disconnect",
 			remoteAddress: socket.remoteAddress,
 			remotePort: socket.remotePort,
@@ -57,7 +57,7 @@ export default class tcpProxy {
 		}));
 
 		// Error
-		socket.on("error", (err) => this.eventEmitter.emit('error', {
+		socket.on("error", (err) => this.proxyEmitter.emit('error', {
 			message: "server",
 			listen: {
 				host: this.options.listen.host,
@@ -65,7 +65,7 @@ export default class tcpProxy {
 			},
 			...err
 		}));
-		client.on("error", (err) => this.eventEmitter.emit('error', {
+		client.on("error", (err) => this.proxyEmitter.emit('error', {
 			message: "upstream",
 			upstream: this.target,
 			...err
