@@ -7,7 +7,7 @@ const proxyEmitter = new tcpProxy('127.0.0.1:8888', {
 	listen: {
 		host: '127.0.0.1', // Listen Host (Optional)
 		port: 8887 // Listen Port (optional)
-	},
+	}
 });
 
 proxyEmitter.on('access', (data) => console.info(data));
