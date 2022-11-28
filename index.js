@@ -1,10 +1,15 @@
+import { EventEmitter } from 'node:events';
 import net from 'node:net';
 
 export default class tcpProxy {
 	constructor(target, options) {
+		this.eventEmitter = new EventEmitter();
+
 		this.target = target;
 		this.options = options;
 		this.#createServer();
+		
+		return this.eventEmitter;
 	}
 
 	#createServer() {
@@ -30,56 +35,40 @@ export default class tcpProxy {
 
 	#log(socket, client) {
 		// Access
-		this.options.log({
-			type: "access",
-			log: {
-				time: new Date().toISOString(),
-				message: 'connect',
-				remoteAddress: socket.remoteAddress,
-				remotePort: socket.remotePort,
-				upstream: this.target,
-				listen: {
-					host: this.options.listen.host,
-					port: this.options.listen.port
-				}
+		this.eventEmitter.emit('access', {
+			message: '',
+			remoteAddress: socket.remoteAddress,
+			remotePort: socket.remotePort,
+			upstream: this.target,
+			listen: {
+				host: this.options.listen.host,
+				port: this.options.listen.port
 			}
 		});
-		socket.on('end', () => this.options.log({
-			type: "access",
-			log: {
-				time: new Date().toISOString(),
-				message: 'disconnect',
-				remoteAddress: socket.remoteAddress,
-				remotePort: socket.remotePort,
-				upstream: this.target,
-				listen: {
-					host: this.options.listen.host,
-					port: this.options.listen.port
-				}
+		socket.on('end', () => this.eventEmitter.emit('access', {
+			message: "disconnect",
+			remoteAddress: socket.remoteAddress,
+			remotePort: socket.remotePort,
+			upstream: this.target,
+			listen: {
+				host: this.options.listen.host,
+				port: this.options.listen.port
 			}
 		}));
 
 		// Error
-		socket.on("error", (err) => this.options.log({
-			type: "error",
-			log: {
-				time: new Date().toISOString(),
-				message: "server",
-				listen: {
-					host: this.options.listen.host,
-					port: this.options.listen.port
-				},
-				...err
-			}
+		socket.on("error", (err) => this.eventEmitter.emit('error', {
+			message: "server",
+			listen: {
+				host: this.options.listen.host,
+				port: this.options.listen.port
+			},
+			...err
 		}));
-		client.on("error", (err) => this.options.log({
-			type: "error",
-			log: {
-				time: new Date().toISOString(),
-				message: "upstream",
-				upstream: this.target,
-				...err
-			}
+		client.on("error", (err) => this.eventEmitter.emit('error', {
+			message: "upstream",
+			upstream: this.target,
+			...err
 		}));
 	}
 }
