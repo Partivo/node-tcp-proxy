@@ -10,6 +10,7 @@ if(!myArgs[0] && !myArgs[1]) {
 	process.exit(1);
 }
 
+const options = {};
 if(myArgs[2] == "-l" || myArgs[2] == "-listen") options.listen = {
 	host: myArgs[3],
 	port: myArgs[4]
