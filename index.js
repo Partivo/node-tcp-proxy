@@ -45,7 +45,6 @@ export default class tcpProxy {
 		this.eventEmitter.emit('access', {
 			message: 'connect',
 			remoteAddress: socket.remoteAddress,
-			remotePort: socket.remotePort,
 			upstream: this.target,
 			listen: {
 				host: this.options.listen.host,
@@ -55,7 +54,6 @@ export default class tcpProxy {
 		socket.on('end', () => this.eventEmitter.emit('access', {
 			message: "disconnect",
 			remoteAddress: socket.remoteAddress,
-			remotePort: socket.remotePort,
 			upstream: this.target,
 			listen: {
 				host: this.options.listen.host,
