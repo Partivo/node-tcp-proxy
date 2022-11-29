@@ -3,15 +3,15 @@ It is a simple tcp proxy written in NodeJS. You can support development. If ther
 
 ## Example Code
 ```js
-const proxyEmitter = new tcpProxy('127.0.0.1:8888', {
+var proxy = new tcpProxy('127.0.0.1:8888', {
 	listen: {
 		host: '127.0.0.1', // Listen Host (Optional)
 		port: 8887 // Listen Port (optional)
 	}
 });
 
-proxyEmitter.on('access', (data) => console.info(data));
-proxyEmitter.on('error', (data) => console.error(data));
+proxy.on('access', (data) => console.info(data));
+proxy.on('error', (data) => console.error(data));
 ```
 
 ## Coming Soon
