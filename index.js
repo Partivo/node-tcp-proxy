@@ -43,36 +43,23 @@ export default class tcpProxy {
 		// Access
 		this.eventEmitter.emit('access', {
 			message: 'connect',
-			remoteAddress: socket.remoteAddress,
-			upstream: this.target,
-			listen: {
-				host: this.options.listen.host,
-				port: this.options.listen.port
-			}
+			remoteAddress: socket.remoteAddress
 		});
 		socket.on('end', () => this.eventEmitter.emit('access', {
 			message: "disconnect",
-			remoteAddress: socket.remoteAddress,
-			upstream: this.target,
-			listen: {
-				host: this.options.listen.host,
-				port: this.options.listen.port
-			}
+			remoteAddress: socket.remoteAddress
 		}));
 
 		// Error
 		socket.on("error", (err) => this.eventEmitter.emit('error', {
 			message: "server",
-			listen: {
-				host: this.options.listen.host,
-				port: this.options.listen.port
-			},
-			...err
+			remoteAddress: socket.remoteAddress,
+			error: err
 		}));
 		client.on("error", (err) => this.eventEmitter.emit('error', {
 			message: "upstream",
-			upstream: this.target,
-			...err
+			remoteAddress: socket.remoteAddress,
+			error: err
 		}));
 	}
 }
