@@ -12,6 +12,7 @@ proxy.on('error', (data) => console.error(data));
 ```
 
 ## Coming Soon
+* IPv6 Support
 * Load Blancer
 * CLI (Added but still in the test phase)
 
