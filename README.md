@@ -4,10 +4,7 @@ It is a simple tcp proxy written in NodeJS. You can support development. If ther
 ## Example Code
 ```js
 var proxy = new tcpProxy('127.0.0.1:8888', {
-	listen: {
-		host: '127.0.0.1', // Listen Host (Optional)
-		port: 8887 // Listen Port (optional)
-	}
+	listen: '127.0.0.1:8887'
 });
 
 proxy.on('access', (data) => console.info(data));
