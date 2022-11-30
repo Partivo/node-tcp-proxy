@@ -13,15 +13,14 @@ export default class tcpProxy {
 	}
 
 	#createServer() {
-		this.options.listen.host = this.options.listen.host || '127.0.0.1';
-		this.options.listen.port = this.options.listen.port || this.target.split(":")[1];
+		this.options.listen = this.options.listen.split(":");
 		net.createServer((socket) => {
 			var client = tcpProxy.createProxy(socket, {
 				target: this.target
 			});
 			this.#log(socket, client);
 			socket.on('close', () => client.emit('end'));
-		}).listen(this.options.listen.port, this.options.listen.host);
+		}).listen(this.options.listen[1], this.options.listen[0]);
 	}
 
 	static createProxy(socket, options) {
