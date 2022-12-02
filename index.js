@@ -1,5 +1,5 @@
-import { EventEmitter } from 'node:events';
-import net from 'node:net';
+const EventEmitter = require('node:events');
+const net = require('node:net');
 
 export default class tcpProxy {
 	constructor(target, options) {
