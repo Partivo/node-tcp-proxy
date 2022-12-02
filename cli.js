@@ -14,8 +14,12 @@ const options = {};
 if(myArgs[1] == "-l" || myArgs[1] == "-listen") options.listen = myArgs[2];
 
 var proxy = new tcpProxy(myArgs[0], options);
-proxy.on('access', (data) => console.info(data));
-proxy.on('error', (data) => console.error(data));
+proxy.on('access', function(data) {
+	console.info(data);
+});
+proxy.on('error', function(data) {
+	console.error(data);
+});
 
 process.on("uncaughtException", function(err) {
 	console.error(err);
