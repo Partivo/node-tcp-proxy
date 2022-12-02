@@ -6,7 +6,7 @@ function tcpProxy(target, options) {
 
 	this.target = target;
 	this.options = options;
-	this.#createServer();
+	this.createServer();
 		
 	return this.eventEmitter;
 }
@@ -17,7 +17,7 @@ tcpProxy.prototype.createServer = function() {
 		var client = tcpProxy.createProxy(socket, {
 			target: this.target
 		});
-		this.#log(socket, client);
+		this.log(socket, client);
 		socket.on('close', function() {
 			client.emit('end');
 		});
