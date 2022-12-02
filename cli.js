@@ -1,5 +1,5 @@
-import { argv } from 'node:process';
-import tcpProxy from './index.js';
+const process = require('node:process');
+const tcpProxy = require('./index.js');
 
 const myArgs = process.argv.slice(2);
 
