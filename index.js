@@ -6,18 +6,18 @@ function tcpProxy(target, options) {
 
 	this.target = target;
 	this.options = options;
-	this.createServer();
+	this.#createServer();
 		
 	return this.eventEmitter;
 }
 
-tcpProxy.prototype.createServer = function() {
+tcpProxy.prototype.#createServer = function() {
 	this.options.listen = this.options.listen.split(":");
 	net.createServer(function(socket) {
 		var client = tcpProxy.createProxy(socket, {
 			target: this.target
 		});
-		this.log(socket, client);
+		this.#log(socket, client);
 		socket.on('close', function() {
 			client.emit('end');
 		});
@@ -46,7 +46,7 @@ tcpProxy.createProxy = function(socket, options) {
 	return proxyEmitter;
 }
 
-tcpProxy.prototype.log = function(socket, client) {
+tcpProxy.prototype.#log = function(socket, client) {
 	// Access
 	this.eventEmitter.emit('access', {
 		message: 'connect',
