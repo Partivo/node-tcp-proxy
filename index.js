@@ -14,7 +14,7 @@ function tcpProxy(target, options) {
 tcpProxy.prototype.#createServer = function() {
 	this.options.listen = this.options.listen.split(":");
 	net.createServer(function(socket) {
-		var client = tcpProxy.createProxy(socket, {
+		const client = tcpProxy.createProxy(socket, {
 			target: this.target
 		});
 		this.#log(socket, client);
