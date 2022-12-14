@@ -1,5 +1,5 @@
-import process from 'node:process';
-import tcpProxy from './index.js';
+var process = require("node:process");
+var tcpProxy = require("./index");
 
 const myArgs = process.argv.slice(2);
 
@@ -14,12 +14,18 @@ const options = {};
 if(myArgs[1] == "-l" || myArgs[1] == "-listen") options.listen = myArgs[2];
 
 var proxy = new tcpProxy(myArgs[0], options);
-proxy.on('access', (data) => console.info(data));
-proxy.on('error', (data) => console.error(data));
+proxy.on('access', function(data) {
+	console.info(data);
+});
+proxy.on('error', function(data) {
+	console.error(data);
+});
 
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", function(err) {
 	console.error(err);
 	proxy.end();
 });
 
-process.on("SIGINT", () => proxy.end());
+process.on("SIGINT", function() {
+	proxy.end();
+});
