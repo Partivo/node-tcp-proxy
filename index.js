@@ -1,7 +1,6 @@
 const { EventEmitter } = require('events');
 const net = require('net');
 
-
 function tcpProxy(target, options) {
     this.eventEmitter = new EventEmitter();
 
