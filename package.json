@@ -1,6 +1,6 @@
 {
 	"name": "@partivo/tcp-proxy",
-	"version": "0.0.3-beta.5",
+	"version": "0.0.3-beta.6",
 	"description": "Simple TCP Proxy - Node.js",
 	"main": "index.js",
 	"scripts": { "test": "echo 'Error: no test specified'" },
