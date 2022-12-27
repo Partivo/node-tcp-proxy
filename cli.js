@@ -33,9 +33,9 @@ proxy.on('error', function(data) {
 
 process.on("uncaughtException", function(err) {
 	console.error(err);
-	proxy.end();
+	process.exit(1);
 });
 
 process.on("SIGINT", function() {
-	proxy.end();
+	process.exit(1);
 });
