@@ -15,10 +15,18 @@ if(myArgs[1] == "-l" || myArgs[1] == "-listen") options.listen = myArgs[2];
 
 var proxy = new tcpProxy(myArgs[0], options);
 proxy.on('access', function(data) {
-	console.info(data);
+	console.info(JSON.stringify({
+		time: new Date().toISOString(),
+		level: 'info',
+		...data
+	}));
 });
 proxy.on('error', function(data) {
-	console.error(data);
+	console.error(JSON.stringify({
+		time: new Date().toISOString(),
+		level: 'error',
+		...data
+	}));
 });
 
 process.on("uncaughtException", function(err) {
