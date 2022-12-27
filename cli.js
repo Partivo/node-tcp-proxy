@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 var process = require("node:process");
 var tcpProxy = require("./index");
 
-const myArgs = process.argv.slice(2);
+const myArgs = process.argv.slice(1);
 
 if(!myArgs[0]) {
 	console.log('Upstream IP or Port not found!');
