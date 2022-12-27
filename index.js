@@ -47,13 +47,14 @@ tcpProxy.prototype.createServer = function() {
 }
 
 tcpProxy.prototype.log = function(socket, client) {
+    const eventEmitter = this.eventEmitter;
     // Access
-    this.eventEmitter.emit('access', {
+    eventEmitter.emit('access', {
         message: 'connect',
         remoteAddress: socket.remoteAddress
     });
     socket.on('end', function() {
-        this.eventEmitter.emit('access', {
+        eventEmitter.emit('access', {
             message: "disconnect",
             remoteAddress: socket.remoteAddress
         });
@@ -61,14 +62,14 @@ tcpProxy.prototype.log = function(socket, client) {
 
     // Error
     socket.on("error", function(err) {
-        this.eventEmitter.emit('error', {
+        eventEmitter.emit('error', {
             message: "server",
             remoteAddress: socket.remoteAddress,
             error: err
         });
     });
     client.on("error", function(err) {
-        this.eventEmitter.emit('error', {
+        eventEmitter.emit('error', {
             message: "upstream",
             remoteAddress: socket.remoteAddress,
             error: err
